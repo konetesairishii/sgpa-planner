@@ -71,6 +71,9 @@ This project was created as a learning project to practise web development and b
 - Add clearer input validation
 - Support configurable grading systems
 - Improve accessibility and mobile usability
+- ## Topics
+
+`sgpa` `gpa-calculator` `student-tools` `html` `css` `javascript` `github-pages`
 
 ## Disclaimer
 
