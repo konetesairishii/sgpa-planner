@@ -1,1 +1,149 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SNIST Target SGPA Planner</title>
+<style>
+:root{--bg:#0a1020;--panel:#121b30;--panel2:#182541;--line:#2b3b59;--text:#edf2ff;--muted:#9aa9c3;--blue:#82adff;--violet:#b5a2ff;--green:#78e0b2;--amber:#ffcf87;--red:#ff929f}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#1b2b52,transparent 43%),var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}.wrap{max-width:1100px;margin:auto;padding:26px 18px 46px}.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--violet));color:#10172b;font-weight:900;font-size:20px}.eyebrow{text-transform:uppercase;letter-spacing:.15em;color:var(--blue);font-weight:800;font-size:10px}.brand h1{font-size:19px;margin:2px 0}.hero{margin:29px 0 20px}.hero h2{font-size:clamp(30px,5vw,46px);letter-spacing:-.05em;line-height:1.07;margin:8px 0}.hero p{color:var(--muted);max-width:680px;margin:0}.panel{background:rgba(18,27,48,.96);border:1px solid var(--line);border-radius:17px;padding:18px;margin-bottom:15px}.panel h3{margin:0 0 4px;font-size:16px}.sub{color:var(--muted);font-size:12px;margin:0 0 15px}.settings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field{display:grid;gap:6px}.field label{font-size:11px;color:var(--muted);font-weight:700}.field input,.field select,.subject-input{width:100%;background:#0b1428;border:1px solid #314362;border-radius:9px;padding:10px;color:var(--text);font:inherit;outline:none}.field input:focus,.subject-input:focus{border-color:var(--blue)}.subject-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:780px}th{text-align:left;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:10px 7px;border-bottom:1px solid var(--line)}td{padding:8px 6px;border-bottom:1px solid #23324c}td input{min-width:65px}.subject-input{min-width:145px}.total{font-weight:800;white-space:nowrap}.grade{font-weight:800;color:var(--violet)}.btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 13px;font-weight:750;cursor:pointer}.btn.primary{background:linear-gradient(135deg,var(--blue),var(--violet));color:#10172b;border:0}.btn.danger{color:var(--red)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.metric{padding:15px;background:#0b1428;border:1px solid var(--line);border-radius:13px}.metric label{color:var(--muted);font-size:11px}.metric .value{font-size:27px;letter-spacing:-.04em;font-weight:850;margin:4px 0}.metric p{font-size:11px;color:var(--muted);margin:0}.status{border:1px solid var(--line);border-radius:12px;padding:13px;margin-top:13px}.status.good{border-color:#2c735e;background:#102b29}.status.warn{border-color:#80643d;background:#2a2419}.status.bad{border-color:#80414b;background:#2b1a25}.status strong{display:block;margin-bottom:3px}.status span{font-size:12px;color:var(--muted)}.small-note{font-size:11px;color:var(--muted);margin-top:12px}.formula{padding:12px;border-radius:10px;background:#0b1428;color:var(--muted);font-size:12px;margin-top:12px}.formula b{color:var(--text)}.bar{height:7px;background:#293650;border-radius:20px;overflow:hidden;margin-top:8px}.fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--violet));width:0}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:10px;color:var(--muted)}.footer{text-align:center;color:var(--muted);font-size:11px;margin-top:20px}
+@media(max-width:700px){.settings,.result-grid{grid-template-columns:1fr}.wrap{padding:18px 12px}.panel{padding:13px}}
+</style>
+</head>
+<body><div class="wrap">
+<header class="brand"><div class="logo">S</div><div><div class="eyebrow">SNIST · CSE Data Science</div><h1>Target SGPA Planner</h1></div></header>
+<section class="hero"><div class="eyebrow">Plan the marks. Don't guess.</div><h2>Low Mid-1?<br><span style="color:var(--blue)">Calculate your recovery.</span></h2><p>Enter your marks and credits. See what you need in Mid-2 and the end-semester exam to aim for 8.5 SGPA. Results update as you edit.</p></section>
+<section class="panel"><h3>Target settings</h3><p class="sub">Change the target anytime. SGPA depends on each subject's credits and grade points.</p><div class="settings">
+<div class="field"><label for="target">Target SGPA (0–10)</label><input id="target" type="number" min="0" max="10" step=".1" value="8.5"></div>
+<div class="field"><label for="m2av">Expected Mid-2 assignment/viva (/10)</label><input id="m2av" type="number" min="0" max="10" value="8"></div>
+<div class="field"><label for="examMode">Planning mode</label><select id="examMode"><option value="needed">Find required end-exam marks</option><option value="fixed">I will enter expected end-exam marks</option></select></div>
+</div><div class="field" id="fixedExamField" style="display:none;margin-top:12px"><label for="fixedExam">Expected end-semester exam marks (/60)</label><input id="fixedExam" type="number" min="0" max="60" value="48"></div></section>
+<section class="panel"><h3>Subject marks and credits</h3><p class="sub">Mid-1 and Mid-2 total 40 each: theory /30 + assignment/viva /10. Enter Mid-1; the planner estimates the Mid-2 theory and end-exam scores needed.</p>
+<div class="subject-wrap"><table><thead><tr><th>Subject</th><th>Credits</th><th>M1 theory /30</th><th>M1 A/V /10</th><th>Required M2 theory /30</th><th>Required end exam /60</th><th>Projected marks</th><th>Grade</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="actions"><button class="btn primary" id="add">＋ Add subject</button><button class="btn" id="reset">Reset examples</button><button class="btn" id="export">Export CSV</button></div>
+<div class="formula"><b>Final marks</b> = (Mid-1 total + Mid-2 total) ÷ 2 + end exam.<br><b>Grade point bands configured:</b> 90+ = 10, 80–89.99 = 9, 70–79.99 = 8, 60–69.99 = 7, 50–59.99 = 6, 40–49.99 = 5, below 40 = 0. Verify the applicable SNIST regulations for your batch.</div>
+</section>
+<section class="panel"><h3>Laboratory and practical subjects</h3><p class="sub">No midterm theory inputs for these subjects. Enter the final subject marks when available; these grade points are included in the overall SGPA target.</p>
+<div class="subject-wrap"><table><thead><tr><th>Lab / practical subject</th><th>Credits</th><th>Final marks /100</th><th>Grade</th><th>Grade points</th></tr></thead><tbody id="labRows"></tbody></table></div>
+<div class="small-note">Your provided course table lists 1 credit each for AEP Lab, English Language and Communication Skills Lab, and Engineering Workshop.</div></section>
+<section class="panel"><h3>Your recovery plan</h3><p class="sub">The SGPA target is optimized across subjects using credits and grade-point bands. This is a planning estimate, not a guarantee of passing or of your college's final result.</p>
+<div class="result-grid"><div class="metric"><label>Current Mid-1 average</label><div class="value" id="m1avg">—</div><p>Out of 40, across subjects</p></div><div class="metric"><label>Required Mid-2 theory average</label><div class="value" id="m2avg">—</div><p>Out of 30, if feasible under selected mode</p></div><div class="metric"><label>Required end-exam average</label><div class="value" id="examavg">—</div><p>Out of 60, if feasible under selected mode</p></div></div>
+<div id="overallStatus" class="status"><strong>Enter your marks</strong><span>Results will appear here.</span></div>
+<div id="subjectDetails" style="margin-top:13px"></div>
+</section>
+<div class="footer">Data is stored locally in this browser. Demo values are examples, not your real marks. Confirm subject credits and grading rules from your current official syllabus.</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const examples=[
+{name:"Matrices and Calculus",credits:4,m1t:0,m1a:0,m2t:0},
+{name:"English for Skill Enhancement",credits:3,m1t:0,m1a:0,m2t:0},
+{name:"Programming for Problem Solving",credits:3,m1t:0,m1a:0,m2t:0},
+{name:"Advanced Engineering Physics",credits:3,m1t:0,m1a:0,m2t:0},
+{name:"Electronic Devices and Circuits",credits:3,m1t:0,m1a:0,m2t:0},
+{name:"Environmental Science",credits:1,m1t:0,m1a:0,m2t:0}
+];
+let subjects=[];
+let labs=[
+{name:"Advanced Engineering Physics Laboratory",credits:1,marks:0},
+{name:"English Language and Communication Skills Lab",credits:1,marks:0},
+{name:"Engineering Workshop",credits:1,marks:0}
+];
+function n(v,lo,hi){let x=Number(v);return Number.isFinite(x)?Math.max(lo,Math.min(hi,x)):lo}
+function grade(m){if(m>=90)return {letter:"O",gp:10};if(m>=80)return {letter:"A+",gp:9};if(m>=70)return {letter:"A",gp:8};if(m>=60)return {letter:"B+",gp:7};if(m>=50)return {letter:"B",gp:6};if(m>=40)return {letter:"C",gp:5};return {letter:"F",gp:0}}
+function m1(s){return n(s.m1t,0,30)+n(s.m1a,0,10)}
+function m2(s){return n(s.m2t,0,30)+n($("m2av").value,0,10)}
+function finalMarks(s){return (m1(s)+m2(s))/2+n(s.exam,0,60)}
+function esc(x){return String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderRows(){ $("rows").innerHTML=subjects.map((s,i)=>`<tr data-i="${i}">
+<td><input class="subject-input" data-k="name" aria-label="Subject name" value="${esc(s.name)}"></td>
+<td><input data-k="credits" type="number" min="0" max="30" step=".5" aria-label="Credits" value="${s.credits}"></td>
+<td><input data-k="m1t" type="number" min="0" max="30" aria-label="Mid 1 theory" value="${s.m1t}"></td>
+<td><input data-k="m1a" type="number" min="0" max="10" aria-label="Mid 1 assignment viva" value="${s.m1a}"></td>
+<td class="total" id="needm2-${i}">—</td><td class="total" id="needexam-${i}">—</td><td class="total" id="projected-${i}">—</td><td class="grade" id="grade-${i}">—</td></tr>`).join("");}
+function optimize(){
+ const target=n($("target").value,0,10),m2av=n($("m2av").value,0,10),mode=$("examMode").value,fixed=n($("fixedExam").value,0,60);
+ const credits=subjects.reduce((a,s)=>a+n(s.credits,0,30),0)+labs.reduce((a,l)=>a+n(l.credits,0,30),0);
+ const currentM1=subjects.length?subjects.reduce((a,s)=>a+m1(s),0)/subjects.length:0;
+ // Find a feasible combination of Mid-2 theory marks and end exam marks that reaches the target SGPA.
+ // For each subject, candidates use grade thresholds and minimal required scores; choose minimum total effort.
+ let best=null;
+ const candidates=subjects.map(s=>{
+   const arr=[];
+   for(let t2=0;t2<=30;t2++){
+    for(let ex=0;ex<=60;ex++){
+      if(mode==="fixed"&&ex!==fixed)continue;
+      const marks=(m1(s)+(t2+m2av))/2+ex;
+      const g=grade(marks);
+      // cost balances Mid-2 and end-exam effort on their different scales
+      const cost=t2/30+ex/60;
+      arr.push({t2,ex,marks,g,cost});
+    }
+   }
+   return arr;
+ });
+ // Dynamic programming over grade-point totals. The grade point target is rounded up to 0.01.
+ // Credits can be fractional; evaluate each subject's best attainable GP threshold combinations.
+ const options=subjects.map((s,i)=>{
+   let out=[];
+   for(let t2=0;t2<=30;t2++){
+    for(let ex=0;ex<=60;ex++){
+     if(mode==="fixed"&&ex!==fixed)continue;
+     let marks=(m1(s)+(t2+m2av))/2+ex,g=grade(marks);
+     out.push({t2,ex,marks,g,cost:t2/30+ex/60});
+    }
+   }
+   return out;
+ });
+ // Use a weighted-score search with a Lagrangian penalty to find a practical minimum-effort plan.
+ let chosen=subjects.map((s,i)=>{let opts=options[i];opts.sort((a,b)=>a.cost-b.cost||b.g.gp-a.g.gp);return opts[0]});
+ function sg(arr){let cr=0,pts=0;arr.forEach((o,i)=>{let c=n(subjects[i].credits,0,30);cr+=c;pts+=c*o.g.gp});labs.forEach(l=>{let c=n(l.credits,0,30);cr+=c;pts+=c*grade(n(l.marks,0,100)).gp});return cr?pts/cr:0}
+ if(!subjects.length||!credits){paintEmpty();return}
+ let feasible=false;
+ for(let lambda=0;lambda<=1000;lambda+=.5){
+  chosen=options.map((opts,i)=>{
+   const c=n(subjects[i].credits,0,30);
+   let bestOpt=opts[0],bestScore=Infinity;
+   for(const o of opts){let score=o.cost-lambda*c*o.g.gp/10000;if(score<bestScore){bestScore=score;bestOpt=o}}
+   return bestOpt;
+  });
+  if(sg(chosen)>=target){feasible=true;break}
+ }
+ if(!feasible){
+  chosen=options.map(opts=>opts.reduce((a,b)=>b.g.gp>a.g.gp||(b.g.gp===a.g.gp&&b.marks>a.marks)?b:a,opts[0]));
+ }
+ // Calculate lower-bound requirements for each subject, targeting grade bands that collectively hit SGPA.
+ const actualSG=sg(chosen);
+ let totalM2=0,totalExam=0,totalFinal=0,details=[];
+ chosen.forEach((o,i)=>{
+  totalM2+=o.t2;totalExam+=o.ex;totalFinal+=o.marks;
+  const s=subjects[i],reqM2=mode==="needed"?o.t2:null,reqEx=o.ex;
+  $("needm2-"+i).innerHTML=mode==="needed"?`${o.t2}/30 <div style="font-size:10px;color:var(--muted)">A/V ${m2av}/10</div>`:`${n(s.m2t,0,30)}/30 entered`;
+  $("needexam-"+i).textContent=`${o.ex}/60`;
+  $("projected-"+i).textContent=o.marks.toFixed(1);
+  $("grade-"+i).textContent=o.g.letter;
+  details.push(`<div style="padding:11px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center"><div><b>${esc(s.name)}</b><div style="color:var(--muted);font-size:11px">${n(s.credits,0,30)} credits · Mid-1 ${m1(s)}/40</div></div><div style="text-align:right"><b>${o.marks.toFixed(1)}/100 · ${o.g.letter}</b><div style="font-size:11px;color:var(--muted)">Mid-2 theory ${o.t2}/30 · End exam ${o.ex}/60</div></div></div>`);
+ });
+ $("m1avg").textContent=currentM1.toFixed(1)+"/40";
+ $("m2avg").textContent=subjects.length?(totalM2/subjects.length).toFixed(1)+"/30":"—";
+ $("examavg").textContent=subjects.length?(totalExam/subjects.length).toFixed(1)+"/60":"—";
+ $("subjectDetails").innerHTML=details.join("");
+ let status=$("overallStatus");status.className="status "+(feasible?"good":"warn");
+ status.innerHTML=feasible?`<strong>Estimated SGPA: ${actualSG.toFixed(2)} / 10 — target reached</strong><span>One possible score plan is shown below. These are minimum-effort estimates under the configured grade bands; aim above the listed marks to leave a safety margin.</span>`:`<strong>Target not reached under the current assumptions</strong><span>Even the best available marks in this model do not reach ${target.toFixed(2)} SGPA. Check credits, target, or end-exam assumptions.</span>`;
+ if(mode==="fixed")status.innerHTML+=`<div style="margin-top:7px;font-size:11px;color:var(--muted)">End-exam marks fixed at ${fixed}/60. Mid-2 is optimized within 0–30 theory plus ${m2av}/10 assignment/viva.</div>`;
+}
+function paintEmpty(){$("m1avg").textContent="—";$("m2avg").textContent="—";$("examavg").textContent="—";$("subjectDetails").innerHTML="";$("overallStatus").className="status";$("overallStatus").innerHTML="<strong>Enter subject credits and marks</strong><span>Results update automatically.</span>"}
+function renderLabs(){
+ $("labRows").innerHTML=labs.map((l,i)=>`<tr data-lab="${i}"><td>${esc(l.name)}</td><td><input data-lk="credits" type="number" min="0" max="30" step=".5" value="${l.credits}" aria-label="Lab credits"></td><td><input data-lk="marks" type="number" min="0" max="100" value="${l.marks}" aria-label="Lab final marks"></td><td class="grade">${grade(n(l.marks,0,100)).letter}</td><td class="total">${grade(n(l.marks,0,100)).gp}</td></tr>`).join("");
+}
+$("labRows").addEventListener("change",e=>{let el=e.target.closest("[data-lk]");if(!el)return;let l=labs[Number(el.closest("tr").dataset.lab)],k=el.dataset.lk;l[k]=n(el.value,0,k==="marks"?100:30);update()});
+function update(){renderRows();renderLabs();optimize();try{localStorage.setItem("snist_target_subjects",JSON.stringify(subjects));localStorage.setItem("snist_target_labs",JSON.stringify(labs));localStorage.setItem("snist_target_settings",JSON.stringify({target:$("target").value,m2av:$("m2av").value,mode:$("examMode").value,fixed:$("fixedExam").value}))}catch(e){}}
+$("rows").addEventListener("change",e=>{let el=e.target.closest("[data-k]");if(!el)return;let s=subjects[Number(el.closest("tr").dataset.i)],k=el.dataset.k;if(k==="name")s.name=el.value.trim()||"Subject";else{let limits={credits:[0,30],m1t:[0,30],m1a:[0,10]}[k];s[k]=n(el.value,limits[0],limits[1]);el.value=s[k]}update()});
+$("rows").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.dataset.k){e.preventDefault();e.target.blur()}});
+["target","m2av","fixedExam"].forEach(id=>$(id).addEventListener("input",()=>{optimize();try{localStorage.setItem("snist_target_settings",JSON.stringify({target:$("target").value,m2av:$("m2av").value,mode:$("examMode").value,fixed:$("fixedExam").value}))}catch(e){}}));
+$("examMode").addEventListener("change",()=>{$("fixedExamField").style.display=$("examMode").value==="fixed"?"grid":"none";optimize()});
+$("add").onclick=()=>{subjects.push({name:"New subject",credits:3,m1t:0,m1a:0,m2t:0});update()};
+$("reset").onclick=()=>{subjects=examples.map(s=>({...s}));labs=[{name:"Advanced Engineering Physics Laboratory",credits:1,marks:0},{name:"English Language and Communication Skills Lab",credits:1,marks:0},{name:"Engineering Workshop",credits:1,marks:0}];$("target").value="8.5";$("m2av").value="8";$("examMode").value="needed";$("fixedExamField").style.display="none";update()};
+$("export").onclick=()=>{let rows=[["Subject","Credits","M1 Theory/30","M1 Assignment-Viva/10"],...subjects.map(s=>[s.name,s.credits,s.m1t,s.m1a,s.m2t])];let csv=rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(",")).join("\r\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="SNIST_Target_SGPA.csv";a.click();URL.revokeObjectURL(a.href)};
+try{subjects=JSON.parse(localStorage.getItem("snist_target_subjects"))||examples.map(s=>({...s}));labs=JSON.parse(localStorage.getItem("snist_target_labs"))||labs;let st=JSON.parse(localStorage.getItem("snist_target_settings"));if(st){$("target").value=st.target||8.5;$("m2av").value=st.m2av??8;$("examMode").value=st.mode||"needed";$("fixedExam").value=st.fixed??48;$("fixedExamField").style.display=st.mode==="fixed"?"grid":"none"}}catch(e){subjects=examples.map(s=>({...s}))}
+update();
+</script></body></html>
